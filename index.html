@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhiksha Hall for Friends - A Journey of Love & Food</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            color: #333;
+            padding: 15px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Floating background animations */
+        @keyframes floatBackground {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+                opacity: 0.2;
+            }
+        }
+
+        .bg-decoration {
+            position: fixed;
+            font-size: 3em;
+            pointer-events: none;
+            animation: floatBackground 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        /* Achievement Popup */
+        .achievement-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+            z-index: 3000;
+            text-align: center;
+            max-width: 90%;
+            width: 320px;
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .achievement-popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .achievement-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            animation: bounce 0.6s ease-in-out;
+        }
+
+        .achievement-popup h2 {
+            font-size: 1.3em;
+            color: #ff6b6b;
+            margin-bottom: 8px;
+        }
+
+        .achievement-popup p {
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        header {
+            text-align: center;
+            background: white;
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin-bottom: 25px;
+            animation: slideDown 0.6s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 0px #ffd93d;
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1em;
+            color: #667eea;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .quote-of-love {
+            background: linear-gradient(135deg, #fff9e6, #ffe6f0);
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-style: italic;
+            color: #666;
+            border-left: 3px solid #ff6b6b;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+
+        .quote-of-love:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.2);
+        }
+
+        .restaurants {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 100px;
+        }
+
+        .restaurant {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 10;
+        }
+
+        .restaurant:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .order-count-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #ff6b6b, #ff9068);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65em;
+            box-shadow: 0 3px 10px rgba(255,107,107,0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .order-count-badge:hover {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .order-count-number {
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .restaurant.bhaavya {
+            border-top: 4px solid #ff6b6b;
+        }
+
+        .restaurant.sneha {
+            border-top: 4px solid #4ecdc4;
+        }
+
+        .restaurant.nitesh {
+            border-top: 4px solid #ffd93d;
+        }
+
+        .restaurant h2 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+            padding-right: 50px;
+        }
+
+        .restaurant.bhaavya h2 {
+            color: #ff6b6b;
+        }
+
+        .restaurant.sneha h2 {
+            color: #4ecdc4;
+        }
+
+        .restaurant.nitesh h2 {
+            color: #ff9f1c;
+        }
+
+        .motto {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+            border-left: 3px solid #ddd;
+            padding-left: 10px;
+        }
+
+        .menu-item {
+            background: linear-gradient(135deg, #f9f9f9, #ffffff);
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: linear-gradient(135deg, #fff9e6, #ffe6f0);
+            transform: translateX(5px);
+            border-color: rgba(255,107,107,0.2);
+            box-shadow: 0 3px 10px rgba(255,107,107,0.1);
+        }
+
+        .item-name {
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+            font-size: 0.95em;
+        }
+
+        .item-tagline {
+            font-size: 0.75em;
+            color: #888;
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        .order-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.85em;
+            box-shadow: 0 3px 10px rgba(102,126,234,0.3);
+        }
+
+        .order-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.5);
+        }
+
+        .order-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Animations */
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.5) rotate(180deg);
+            }
+        }
+
+        @keyframes foodFly {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-200px) translateX(50px) rotate(180deg) scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-400px) translateX(-50px) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        .confetti, .food-particle {
+            position: fixed;
+            font-size: 2em;
+            pointer-events: none;
+            z-index: 9999;
+            animation: confetti 2s ease-out forwards;
+        }
+
+        .food-particle {
+            animation: foodFly 2.5s ease-out forwards;
+        }
+
+        .sparkle {
+            position: fixed;
+            font-size: 2.5em;
+            pointer-events: none;
+            z-index: 9999;
+            animation: sparkle 1s ease-out forwards;
+        }
+
+        @keyframes cartPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes cartGlow {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(255,107,107,0.3);
+            }
+            50% {
+                box-shadow: 0 5px 30px rgba(255,107,107,0.6), 0 0 20px rgba(255,107,107,0.4);
+            }
+        }
+
+        .cart {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff6b6b, #ff9068);
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255,107,107,0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            z-index: 999;
+        }
+
+        .cart:hover {
+            transform: scale(1.15);
+            animation: cartGlow 1.5s ease-in-out infinite;
+        }
+
+        .cart.pulse {
+            animation: cartPulse 0.5s ease-out, cartGlow 1.5s ease-in-out infinite;
+        }
+
+        .cart-count {
+            font-size: 1.6em;
+        }
+
+        .cart-text {
+            font-size: 0.6em;
+            margin-top: 3px;
+        }
+
+        /* Modals - Mobile Friendly */
+        .cart-modal, .gratitude-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .cart-modal.active, .gratitude-modal.active {
+            display: flex;
+        }
+
+        .cart-content, .gratitude-content {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: slideUp 0.4s ease-out;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+        }
+
+        .gratitude-content {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6f0 100%);
+            max-width: 600px;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .cart-content h2, .gratitude-content h2 {
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9em;
+        }
+
+        .remove-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background: #ff5252;
+            transform: scale(1.05);
+        }
+
+        .close-cart {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            width: 100%;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+
+        .close-cart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-style: italic;
+            font-size: 0.95em;
+        }
+
+        .order-summary {
+            background: linear-gradient(135deg, #f0f0f0, #fafafa);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .celebration {
+            text-align: center;
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .gratitude-icons {
+            font-size: 3em;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .gratitude-icons span {
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .gratitude-icons span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .gratitude-icons span:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .gratitude-message {
+            font-size: 1em;
+            color: #555;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+
+        .personal-message-area {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+
+        .personal-message-area h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .message-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.9em;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102,126,234,0.2);
+        }
+
+        .payment-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .payment-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff9068 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+        }
+
+        .payment-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 18px rgba(255,107,107,0.5);
+        }
+
+        .payment-btn.love {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06c84 100%);
+        }
+
+        .payment-btn.gratitude {
+            background: linear-gradient(135deg, #ffd93d 0%, #ff9f1c 100%);
+        }
+
+        .order-details {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .order-details h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .order-detail-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        @keyframes floatUpHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-350px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .floating-hearts {
+            position: fixed;
+            font-size: 2em;
+            pointer-events: none;
+            z-index: 9999;
+            animation: floatUpHeart 3s ease-out forwards;
+        }
+
+        /* Delivery Animation */
+        .delivery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2500;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delivery-modal.active {
+            display: flex;
+        }
+
+        .delivery-content {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .delivery-emoji {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        .delivery-message {
+            font-size: 1.3em;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .tagline {
+                font-size: 0.9em;
+            }
+
+            .restaurants {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .restaurant h2 {
+                font-size: 1.2em;
+            }
+
+            .item-name {
+                font-size: 0.85em;
+            }
+
+            .item-tagline {
+                font-size: 0.7em;
+            }
+
+            .order-btn {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
+
+            .cart {
+                width: 60px;
+                height: 60px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .cart-count {
+                font-size: 1.4em;
+            }
+
+            .cart-content, .gratitude-content {
+                padding: 20px;
+                max-height: 90vh;
+            }
+
+            .cart-content h2, .gratitude-content h2 {
+                font-size: 1.3em;
+            }
+
+            .gratitude-icons {
+                font-size: 2.5em;
+                gap: 10px;
+            }
+
+            .payment-btn {
+                padding: 10px 16px;
+                font-size: 0.85em;
+            }
+
+            .achievement-popup {
+                padding: 20px;
+                width: 280px;
+            }
+
+            .achievement-icon {
+                font-size: 3.5em;
+            }
+
+            .achievement-popup h2 {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .quote-of-love {
+                font-size: 0.8em;
+                padding: 10px 15px;
+            }
+
+            .restaurant {
+                padding: 15px;
+            }
+
+            .motto {
+                font-size: 0.8em;
+            }
+
+            .payment-buttons {
+                flex-direction: column;
+            }
+
+            .payment-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Decorations -->
+    <div class="bg-decoration" style="top: 10%; left: 5%;">🌸</div>
+    <div class="bg-decoration" style="top: 20%; right: 10%; animation-delay: 1s;">🌺</div>
+    <div class="bg-decoration" style="top: 60%; left: 10%; animation-delay: 2s;">🌻</div>
+    <div class="bg-decoration" style="bottom: 20%; right: 5%; animation-delay: 3s;">🌹</div>
+
+    <div class="container">
+        <!-- Achievement Popup -->
+        <div class="achievement-popup" id="achievementPopup">
+            <div class="achievement-icon" id="achievementIcon">🏆</div>
+            <h2 id="achievementTitle">Achievement Unlocked!</h2>
+            <p id="achievementText">You've reached a new level of gratitude!</p>
+        </div>
+
+        <header>
+            <h1>Friends Bhiksha Hall </h1>
+            <p class="tagline">"Where Friends Serve Love on Every Plate"</p>
+            <div class="quote-of-love" id="quoteOfLove">
+                "Food made with love is the language of the soul"
+            </div>
+        </header>
+
+        <div class="restaurants">
+            <!-- Bhaavya's Restaurant -->
+            <div class="restaurant bhaavya">
+                <div class="order-count-badge">
+                    <div class="order-count-number" id="bhaavyaCount">0</div>
+                    <div style="font-size: 0.7em;">orders</div>
+                </div>
+                <h2>✨ Bhaavya's Blinging Bakes & Spice Station ✨</h2>
+                <p class="motto">"She won't stop until you're fed, happy, and coming back for more - baking with joy and Andhra fire in equal measure!"</p>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Chocolate Fudge Cake', '🎂', this)">
+                    <div>
+                        <div class="item-name">🎂 Chocolate Fudge Cake</div>
+                        <div class="item-tagline">So moist, it'll make you cry tears of joy</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Chocolate Fudge Cake', '🎂', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Red Velvet Delight', '🍰', this)">
+                    <div>
+                        <div class="item-name">🍰 Red Velvet Delight</div>
+                        <div class="item-tagline">Red like passion, sweet like friendship</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Red Velvet Delight', '🍰', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Vanilla Dream Cake', '🧁', this)">
+                    <div>
+                        <div class="item-name">🧁 Vanilla Dream Cake</div>
+                        <div class="item-tagline">Classic never goes out of style, just like this friendship</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Vanilla Dream Cake', '🧁', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Death by Chocolate Brownies', '🍫', this)">
+                    <div>
+                        <div class="item-name">🍫 Death by Chocolate Brownies</div>
+                        <div class="item-tagline">Warning: Extreme happiness and possible chocolate coma</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Death by Chocolate Brownies', '🍫', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Walnut Fudge Brownies', '🟫', this)">
+                    <div>
+                        <div class="item-name">🟫 Walnut Fudge Brownies</div>
+                        <div class="item-tagline">Crunchy, fudgy, and absolutely addictive</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Walnut Fudge Brownies', '🟫', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Andhra Paneer Curry', '🌶️', this)">
+                    <div>
+                        <div class="item-name">🌶️ Andhra Paneer Curry</div>
+                        <div class="item-tagline">Spice level: "I dare you!" - Tissue box not included</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Andhra Paneer Curry', '🌶️', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Gongura Veg Curry', '🍛', this)">
+                    <div>
+                        <div class="item-name">🍛 Gongura Veg Curry</div>
+                        <div class="item-tagline">The taste of Andhra heaven in a bowl</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Gongura Veg Curry', '🍛', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Andhra Aloo Fry', '🥔', this)">
+                    <div>
+                        <div class="item-name">🥔 Andhra Aloo Fry</div>
+                        <div class="item-tagline">Crispy outside, tender inside, perfect all around</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Andhra Aloo Fry', '🥔', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Pulihora', '🌾', this)">
+                    <div>
+                        <div class="item-name">🌾 Pulihora (Tamarind Rice)</div>
+                        <div class="item-tagline">Tangy, spicy, and worth every spoonful</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Pulihora', '🌾', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Bhaavya', 'Bisi Bele Bath', '🥘', this)">
+                    <div>
+                        <div class="item-name">🥘 Bisi Bele Bath</div>
+                        <div class="item-tagline">One pot wonder that'll make you wonder why you eat anything else</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Bhaavya', 'Bisi Bele Bath', '🥘', event)">Add!</button>
+                </div>
+            </div>
+
+            <!-- Sneha's Kitchen -->
+            <div class="restaurant sneha">
+                <div class="order-count-badge">
+                    <div class="order-count-number" id="snehaCount">0</div>
+                    <div style="font-size: 0.7em;">orders</div>
+                </div>
+                <h2>🏠 Sneha Kitchen 🏠</h2>
+                <p class="motto">"She won't let anyone go hungry - cooking with the power of 10 hands and an endless heart!"</p>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Fresh Soft Chapatis', '🫓', this)">
+                    <div>
+                        <div class="item-name">🫓 Fresh Soft Chapatis</div>
+                        <div class="item-tagline">Perfectly round? No. Perfectly delicious? Absolutely!</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Fresh Soft Chapatis', '🫓', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Paneer Butter Masala', '🥘', this)">
+                    <div>
+                        <div class="item-name">🥘 Paneer Butter Masala</div>
+                        <div class="item-tagline">So creamy, you'll lick the bowl (we won't judge)</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Paneer Butter Masala', '🥘', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Dal Makhani', '🍲', this)">
+                    <div>
+                        <div class="item-name">🍲 Dal Makhani</div>
+                        <div class="item-tagline">Black gold in a bowl - worth more than crypto</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Dal Makhani', '🍲', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Paneer Tikka Masala', '🧀', this)">
+                    <div>
+                        <div class="item-name">🧀 Paneer Tikka Masala</div>
+                        <div class="item-tagline">Vegetarians' revenge - so good meat-eaters get jealous</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Paneer Tikka Masala', '🧀', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Chole Bhature', '🥙', this)">
+                    <div>
+                        <div class="item-name">🥙 Chole Bhature</div>
+                        <div class="item-tagline">Fluffy clouds of happiness with spicy chickpeas</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Chole Bhature', '🥙', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Veg Biryani', '🍚', this)">
+                    <div>
+                        <div class="item-name">🍚 Veg Biryani</div>
+                        <div class="item-tagline">Every grain of rice tells a story of deliciousness</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Veg Biryani', '🍚', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Masala Dosa', '🥞', this)">
+                    <div>
+                        <div class="item-name">🥞 Masala Dosa</div>
+                        <div class="item-tagline">Crispy, golden, and longer than your attention span</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Masala Dosa', '🥞', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Idli-Vada Combo', '⚪', this)">
+                    <div>
+                        <div class="item-name">⚪ Idli-Vada Combo</div>
+                        <div class="item-tagline">Soft pillows meet crispy donuts - breakfast of champions</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Idli-Vada Combo', '⚪', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Sambar & Rasam', '🍜', this)">
+                    <div>
+                        <div class="item-name">🍜 Sambar & Rasam</div>
+                        <div class="item-tagline">The dynamic duo of South Indian cuisine</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Sambar & Rasam', '🍜', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Pongal', '🍛', this)">
+                    <div>
+                        <div class="item-name">🍛 Pongal</div>
+                        <div class="item-tagline">Comfort food that hugs you from the inside</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Pongal', '🍛', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Mixed Veg Curry', '🥗', this)">
+                    <div>
+                        <div class="item-name">🥗 Mixed Veg Curry</div>
+                        <div class="item-tagline">All the veggies decided to have a party in your mouth</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Mixed Veg Curry', '🥗', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Sneha', 'Royal Thali', '🍽️', this)">
+                    <div>
+                        <div class="item-name">🍽️ Royal Thali</div>
+                        <div class="item-tagline">It's not hoarding if it's all on one plate - Unlimited refills!</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Sneha', 'Royal Thali', '🍽️', event)">Add!</button>
+                </div>
+            </div>
+
+            <!-- Nitesh's Cafe -->
+            <div class="restaurant nitesh">
+                <div class="order-count-badge">
+                    <div class="order-count-number" id="niteshCount">0</div>
+                    <div style="font-size: 0.7em;">orders</div>
+                </div>
+                <h2>☕ Nitesh's Cafe ☕</h2>
+                <p class="motto">"Ragi today, ragi tomorrow, ragi forever! (But make it gourmet)"</p>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Ragi Aloo Paratha', '🥔', this)">
+                    <div>
+                        <div class="item-name">🥔 Ragi Aloo Paratha</div>
+                        <div class="item-tagline">Health meets taste and they become best friends</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Ragi Aloo Paratha', '🥔', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Ragi Paneer Paratha', '🧀', this)">
+                    <div>
+                        <div class="item-name">🧀 Ragi Paneer Paratha with Curd</div>
+                        <div class="item-tagline">The "I'm healthy but also want cheese" special</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Ragi Paneer Paratha', '🧀', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Ragi Hetu', '🌾', this)">
+                    <div>
+                        <div class="item-name">🌾 Ragi Hetu</div>
+                        <div class="item-tagline">Tradition in every bite (and a lot of fiber)</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Ragi Hetu', '🌾', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Sanjeevini Laddoo', '🍬', this)">
+                    <div>
+                        <div class="item-name">🍬 Sanjeevini Laddoo</div>
+                        <div class="item-tagline">Basically a health potion in sweet form</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Sanjeevini Laddoo', '🍬', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Banana Honey Sandwich', '🍌', this)">
+                    <div>
+                        <div class="item-name">🍌 Banana Honey Sandwich</div>
+                        <div class="item-tagline">★ SIGNATURE ★ Simple, sweet, legendary</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Banana Honey Sandwich', '🍌', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Mango Honey Sandwich', '🥭', this)">
+                    <div>
+                        <div class="item-name">🥭 Mango Honey Sandwich</div>
+                        <div class="item-tagline">★ SIGNATURE ★ Summer in sandwich form</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Mango Honey Sandwich', '🥭', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Apple Honey Sandwich', '🍎', this)">
+                    <div>
+                        <div class="item-name">🍎 Apple Honey Sandwich</div>
+                        <div class="item-tagline">★ SIGNATURE ★ An apple a day keeps everyone at bay</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Apple Honey Sandwich', '🍎', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Rawa Halwa', '🍯', this)">
+                    <div>
+                        <div class="item-name">🍯 Rawa Halwa</div>
+                        <div class="item-tagline">Sweet, ghee-rich, and worth every calorie of happiness</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Rawa Halwa', '🍯', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Besan Halwa', '🟡', this)">
+                    <div>
+                        <div class="item-name">🟡 Besan Halwa</div>
+                        <div class="item-tagline">Golden, aromatic, and melt-in-your-mouth magic</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Besan Halwa', '🟡', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Masala Chai', '☕', this)">
+                    <div>
+                        <div class="item-name">☕ Masala Chai</div>
+                        <div class="item-tagline">Spiced to perfection - one sip and you're home</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Masala Chai', '☕', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Mint Lime Cooler', '🍋', this)">
+                    <div>
+                        <div class="item-name">🍋 Mint Lime Cooler</div>
+                        <div class="item-tagline">Refreshing, tangy, and instantly energizing</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Mint Lime Cooler', '🍋', event)">Add!</button>
+                </div>
+
+                <div class="menu-item" onclick="quickAdd('Nitesh', 'Gobi Paratha', '🥬', this)">
+                    <div>
+                        <div class="item-name">🥬 Gobi Paratha</div>
+                        <div class="item-tagline">Cauliflower heaven stuffed in flaky, buttery layers</div>
+                    </div>
+                    <button class="order-btn" onclick="event.stopPropagation(); addToCart('Nitesh', 'Gobi Paratha', '🥬', event)">Add!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Cart Button -->
+    <div class="cart" onclick="toggleCart()">
+        <div class="cart-count" id="cartCount">0</div>
+        <div class="cart-text">Basket</div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <h2>🍽️ Your Bhiksha Thali</h2>
+            <div id="cartItems"></div>
+            <div id="orderSummary"></div>
+            <button class="close-cart" onclick="toggleCart()">Close</button>
+        </div>
+    </div>
+
+    <!-- Delivery Animation Modal -->
+    <div class="delivery-modal" id="deliveryModal">
+        <div class="delivery-content">
+            <div class="delivery-emoji" id="deliveryEmoji">🚚</div>
+            <div class="delivery-message">
+                <span id="deliveryText">Preparing your order<span class="loading-dots"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gratitude Payment Modal -->
+    <div class="gratitude-modal" id="gratitudeModal">
+        <div class="gratitude-content">
+            <h2>💝 Express Your Gratitude 💝</h2>
+            <div class="gratitude-icons">
+                <span>🙏</span>
+                <span>🌸</span>
+                <span>❤️</span>
+            </div>
+            <p class="gratitude-message">
+                Your friends pour their hearts into every dish.<br>
+                Now it's time to share your heartfelt thanks!
+            </p>
+            <div class="order-details" id="gratitudeOrderDetails"></div>
+
+            <div class="personal-message-area">
+                <h3>💌 Write Your Heart Out</h3>
+                <textarea
+                    class="message-input"
+                    id="personalMessage"
+                    placeholder="Pour your feelings here... Tell them what their love means to you, how their food brings joy to your life, or simply say what's in your heart. They'll feel your warmth through every word! ✨"
+                ></textarea>
+            </div>
+
+            <div class="payment-buttons">
+                <button class="payment-btn gratitude" onclick="payWithGratitude()">
+                    🙏 Send with Gratitude
+                </button>
+                <button class="payment-btn love" onclick="payWithLove()">
+                    ❤️ Send with Love
+                </button>
+                <button class="payment-btn" onclick="payWithBlessings()">
+                    🌟 Send with Blessings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let orderCounts = { Bhaavya: 0, Sneha: 0, Nitesh: 0 };
+        let totalOrders = 0;
+        const emojis = ['🎉', '✨', '🎊', '💫', '⭐', '🌟', '🎈', '🎆', '💖', '💕', '💝'];
+        const foodEmojis = ['🍕', '🍰', '🎂', '🍔', '🌮', '🍜', '🍛', '🍚', '🥘', '🧁', '🍫', '🥙', '🫓'];
+
+        const loveQuotes = [
+            "Food made with love is the language of the soul",
+            "True friends feed your heart before your stomach",
+            "Gratitude turns what we have into enough",
+            "The love in food tastes better than the food itself",
+            "Every meal shared is a memory made with love",
+            "When friends cook for you, they're saying 'you matter'",
+            "The secret ingredient is always love",
+            "Blessed are those who have friends who cook",
+            "Food is love made visible",
+            "In every bite, feel the hug of friendship"
+        ];
+
+        function rotateQuote() {
+            const quote = loveQuotes[Math.floor(Math.random() * loveQuotes.length)];
+            document.getElementById('quoteOfLove').textContent = `"${quote}"`;
+        }
+        setInterval(rotateQuote, 8000);
+
+        function createConfetti(x, y) {
+            for (let i = 0; i < 15; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                confetti.style.left = x + (Math.random() - 0.5) * 120 + 'px';
+                confetti.style.top = y + 'px';
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 2000);
+            }
+        }
+
+        function createFoodParticles(x, y, emoji) {
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'food-particle';
+                particle.textContent = emoji;
+                particle.style.left = x + (Math.random() - 0.5) * 80 + 'px';
+                particle.style.top = y + 'px';
+                particle.style.animationDelay = i * 0.1 + 's';
+                document.body.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 2500);
+            }
+        }
+
+        function createSparkle(x, y) {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.textContent = '✨';
+                    sparkle.style.left = x + (Math.random() - 0.5) * 60 + 'px';
+                    sparkle.style.top = y + (Math.random() - 0.5) * 60 + 'px';
+                    document.body.appendChild(sparkle);
+
+                    setTimeout(() => sparkle.remove(), 1000);
+                }, i * 100);
+            }
+        }
+
+        function showAchievement(icon, title, text) {
+            const popup = document.getElementById('achievementPopup');
+            document.getElementById('achievementIcon').textContent = icon;
+            document.getElementById('achievementTitle').textContent = title;
+            document.getElementById('achievementText').textContent = text;
+
+            popup.classList.add('show');
+            createFloatingHearts(20);
+
+            setTimeout(() => popup.classList.remove('show'), 3000);
+        }
+
+        function updateOrderCount(restaurant) {
+            orderCounts[restaurant]++;
+            totalOrders++;
+            document.getElementById(restaurant.toLowerCase() + 'Count').textContent = orderCounts[restaurant];
+
+            // Achievements
+            if (totalOrders === 5) {
+                showAchievement('🌱', 'Getting Started!', 'Your gratitude journey begins!');
+            } else if (totalOrders === 10) {
+                showAchievement('🌻', 'Double Digits!', 'Your appreciation is blooming!');
+            } else if (totalOrders === 20) {
+                showAchievement('🌺', 'Food Lover!', 'Your friends feel the love!');
+            }
+
+            if (orderCounts.Bhaavya > 0 && orderCounts.Sneha > 0 && orderCounts.Nitesh > 0) {
+                if (totalOrders === orderCounts.Bhaavya + orderCounts.Sneha + orderCounts.Nitesh) {
+                    showAchievement('🎭', 'Friend Collector!', 'You\'ve ordered from all three friends!');
+                }
+            }
+        }
+
+        function quickAdd(restaurant, item, emoji, element) {
+            element.style.background = 'linear-gradient(135deg, #ffe6f0, #fff9e6)';
+            setTimeout(() => {
+                element.style.background = '';
+            }, 400);
+        }
+
+        function addToCart(restaurant, item, emoji, event) {
+            cart.push({ restaurant, item, emoji });
+            updateCart();
+            updateOrderCount(restaurant);
+
+            const btn = event.target;
+            const originalText = btn.textContent;
+            const rect = btn.getBoundingClientRect();
+
+            btn.textContent = '✅ Added!';
+            btn.style.transform = 'scale(1.2)';
+
+            // Create magical effects
+            createConfetti(rect.left + rect.width / 2, rect.top);
+            createFoodParticles(rect.left + rect.width / 2, rect.top, emoji);
+            createSparkle(rect.left + rect.width / 2, rect.top);
+
+            const cartEl = document.querySelector('.cart');
+            cartEl.classList.add('pulse');
+
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.transform = '';
+                cartEl.classList.remove('pulse');
+            }, 1000);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const orderSummary = document.getElementById('orderSummary');
+
+            cartCount.textContent = cart.length;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">Your thali is empty!<br>Start adding prasad from your friends! 🌸</div>';
+                orderSummary.innerHTML = '';
+            } else {
+                cartItems.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.emoji} ${item.item}</strong><br>
+                            <small>from ${item.restaurant}</small>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+                    </div>
+                `).join('');
+
+                const restaurantCounts = {};
+                cart.forEach(item => {
+                    restaurantCounts[item.restaurant] = (restaurantCounts[item.restaurant] || 0) + 1;
+                });
+
+                const summaryText = Object.entries(restaurantCounts)
+                    .map(([name, count]) => `${count} item(s) from ${name}`)
+                    .join('<br>');
+
+                orderSummary.innerHTML = `
+                    <div class="order-summary">
+                        <strong>Your Bhiksha Thali:</strong><br>
+                        ${summaryText}
+                        <div class="celebration">🎉</div>
+                        <button class="close-cart" onclick="showGratitudeModal()" style="margin-top: 15px; background: linear-gradient(135deg, #ff6b6b 0%, #ff9068 100%);">
+                            Time to Say Thanks! 🙏
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('active');
+        }
+
+        function showGratitudeModal() {
+            toggleCart();
+            showDeliveryAnimation();
+        }
+
+        function showDeliveryAnimation() {
+            const deliveryModal = document.getElementById('deliveryModal');
+            const deliveryEmoji = document.getElementById('deliveryEmoji');
+            const deliveryText = document.getElementById('deliveryText');
+
+            deliveryModal.classList.add('active');
+
+            // Get unique restaurants from cart
+            const restaurants = [...new Set(cart.map(item => item.restaurant))];
+
+            // Create funny messages based on restaurants
+            const messageSequences = {
+                'Bhaavya': [
+                    { emoji: '🔍', text: 'Finding Bhaavya', duration: 800 },
+                    { emoji: '🥺', text: 'Convincing her to share the brownies', duration: 1000 },
+                    { emoji: '🎂', text: 'She\'s baking extra just for you', duration: 800 },
+                    { emoji: '📦', text: 'Packed with extra love!', duration: 600 }
+                ],
+                'Sneha': [
+                    { emoji: '👩‍🍳', text: 'Sneha is already in the kitchen', duration: 800 },
+                    { emoji: '🫓', text: 'Making extra chapatis (as usual)', duration: 1000 },
+                    { emoji: '🍛', text: 'Adding all your favorites', duration: 800 },
+                    { emoji: '✨', text: 'Ready with endless love!', duration: 600 }
+                ],
+                'Nitesh': [
+                    { emoji: '🌾', text: 'Nitesh checking his ragi stock', duration: 800 },
+                    { emoji: '🥔', text: 'Kneading the dough perfectly', duration: 1000 },
+                    { emoji: '🍯', text: 'Adding extra honey for you', duration: 800 },
+                    { emoji: '☕', text: 'Your healthy treat is ready!', duration: 600 }
+                ]
+            };
+
+            // If ordering from multiple friends
+            let allMessages = [];
+            if (restaurants.length > 1) {
+                allMessages = [
+                    { emoji: '📱', text: 'Texting all your friends', duration: 800 },
+                    { emoji: '🤝', text: 'They\'re coordinating the delivery', duration: 1000 },
+                    { emoji: '🎉', text: 'Everyone\'s excited to feed you!', duration: 800 },
+                    { emoji: '💝', text: 'Package prepared with love!', duration: 600 }
+                ];
+            } else {
+                allMessages = messageSequences[restaurants[0]] || [
+                    { emoji: '🚚', text: 'Preparing your order', duration: 800 },
+                    { emoji: '📦', text: 'Almost ready', duration: 800 },
+                    { emoji: '✨', text: 'Packed with love!', duration: 600 }
+                ];
+            }
+
+            // Show messages in sequence
+            let currentIndex = 0;
+            function showNextMessage() {
+                if (currentIndex < allMessages.length) {
+                    const msg = allMessages[currentIndex];
+                    deliveryEmoji.textContent = msg.emoji;
+                    deliveryText.innerHTML = msg.text + '<span class="loading-dots"></span>';
+
+                    currentIndex++;
+                    setTimeout(showNextMessage, msg.duration);
+                } else {
+                    // All messages shown, close delivery and show gratitude modal
+                    deliveryModal.classList.remove('active');
+                    openGratitudeModal();
+                }
+            }
+
+            showNextMessage();
+        }
+
+        function openGratitudeModal() {
+            const modal = document.getElementById('gratitudeModal');
+            const orderDetails = document.getElementById('gratitudeOrderDetails');
+
+            orderDetails.innerHTML = `
+                <h3>Your Heartfelt Order:</h3>
+                ${cart.map(item => `
+                    <div class="order-detail-item">
+                        ${item.emoji} <strong>${item.item}</strong> from <em>${item.restaurant}</em>
+                    </div>
+                `).join('')}
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function createFloatingHearts(count) {
+            const hearts = ['❤️', '💛', '💚', '💙', '💜', '🧡', '🌸', '🌺', '🌻', '🌹', '🙏', '✨', '💖', '💕', '💝'];
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-hearts';
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = Math.random() * window.innerWidth + 'px';
+                    heart.style.top = window.innerHeight + 'px';
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 80);
+            }
+        }
+
+        function createMassiveShower() {
+            const count = 50;
+            const allEmojis = [...emojis, ...foodEmojis, '❤️', '💛', '💚', '💙', '💜', '🧡', '🌸', '🌺', '🌻', '🌹', '🙏', '✨'];
+
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const elem = document.createElement('div');
+                    elem.className = Math.random() > 0.5 ? 'floating-hearts' : 'confetti';
+                    elem.textContent = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+                    elem.style.left = Math.random() * window.innerWidth + 'px';
+                    elem.style.top = window.innerHeight + 'px';
+                    elem.style.fontSize = (1.5 + Math.random() * 1.5) + 'em';
+                    document.body.appendChild(elem);
+
+                    setTimeout(() => elem.remove(), 3500);
+                }, i * 50);
+            }
+        }
+
+        function payWithGratitude() {
+            const message = document.getElementById('personalMessage').value;
+            createMassiveShower();
+
+            setTimeout(() => {
+                const messageText = message ?
+                    `\n\nYour heartfelt message:\n"${message}"\n\nWill warm their hearts forever! 💕` :
+                    '\n\nConsider writing a personal message next time to make it even more special! 💕';
+
+                alert('🙏 Your order has been wrapped in gratitude and sent to your wonderful friends! 🙏\n\nNamaskaram! ✨' + messageText);
+                cart = [];
+                updateCart();
+                document.getElementById('gratitudeModal').classList.remove('active');
+                document.getElementById('personalMessage').value = '';
+            }, 1500);
+        }
+
+        function payWithLove() {
+            const message = document.getElementById('personalMessage').value;
+            createMassiveShower();
+
+            setTimeout(() => {
+                const messageText = message ?
+                    `\n\nYour loving message:\n"${message}"\n\nWill make them smile for days! 💕` :
+                    '\n\nA personal message would make this moment even more precious! 💕';
+
+                alert('❤️ Your order has been infused with infinite love and sent to your amazing friends! ❤️\n\nThey will feel your love in every bite! 💕' + messageText);
+                cart = [];
+                updateCart();
+                document.getElementById('gratitudeModal').classList.remove('active');
+                document.getElementById('personalMessage').value = '';
+            }, 1500);
+        }
+
+        function payWithBlessings() {
+            const message = document.getElementById('personalMessage').value;
+            createMassiveShower();
+
+            setTimeout(() => {
+                const messageText = message ?
+                    `\n\nYour blessed message:\n"${message}"\n\nWill be a treasure they cherish! 💕` :
+                    '\n\nYour words would add even more blessings to this beautiful gesture! 💕';
+
+                alert('🌟 Your order has been blessed with countless good wishes and sent to your caring friends! 🌟\n\nMay they be showered with joy and abundance! ✨' + messageText);
+                cart = [];
+                updateCart();
+                document.getElementById('gratitudeModal').classList.remove('active');
+                document.getElementById('personalMessage').value = '';
+            }, 1500);
+        }
+
+        document.getElementById('cartModal').addEventListener('click', function(e) {
+            if (e.target === this) toggleCart();
+        });
+
+        document.getElementById('gratitudeModal').addEventListener('click', function(e) {
+            if (e.target === this) this.classList.remove('active');
+        });
+
+        updateCart();
+    </script>
+</body>
+</html>
